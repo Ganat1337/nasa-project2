@@ -43,7 +43,7 @@ export function SettingsDialog({ open, onClose }: { open: boolean; onClose: () =
           <div>
             <p className="eyebrow">MISSION CONTROL</p>
             <h2 id="settings-title">Dashboard settings</h2>
-          </GlassSheet>
+          </div>
           <button className="icon-button" onClick={onClose} aria-label="Close settings">
             ×
           </button>
@@ -114,7 +114,7 @@ export function SettingsDialog({ open, onClose }: { open: boolean; onClose: () =
         >
           Done
         </CapsuleButton>
-      </div>
+      </GlassSheet>
     </div>
   );
 }

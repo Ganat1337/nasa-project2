@@ -154,7 +154,7 @@ export function KpiNumber({ className, ...props }: KpiNumberProps) {
   return <div className={`ui-kpi-number ${className ?? ""}`} {...props} />;
 }
 
-interface SectionHeaderProps extends HTMLAttributes<HTMLDivElement> {
+interface SectionHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
   kicker: string;
   title: ReactNode;
   aside?: ReactNode;
