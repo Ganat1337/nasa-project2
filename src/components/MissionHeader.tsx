@@ -52,7 +52,15 @@ export function MissionHeader({
     <header className="mission-header">
       <div className="brand-lockup">
         <div className="brand-mark" aria-hidden="true">
-          A
+          <svg viewBox="0 0 32 32" fill="none">
+            <path
+              d="M3 16h6l3.2-7.5L18 24l3.4-12 2.2 4H29"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.8"
+            />
+          </svg>
         </div>
         <div>
           <p className="eyebrow">
@@ -69,6 +77,15 @@ export function MissionHeader({
           </div>
         </div>
       </div>
+
+      <nav className="mission-nav mono" aria-label="Mission sections">
+        <a href="#mission-overview" aria-current="page">
+          Mission control
+        </a>
+        <a href="#crew-vitals">Crew health</a>
+        <a href="#mission-scene">Spacecraft</a>
+        <a href={isDoctor ? "#operations-panel" : "#crew-vitals"}>Analytics</a>
+      </nav>
 
       <div className="header-controls">
         <div

@@ -44,6 +44,8 @@
   --radius: 24px;
 }
 
+.app-shell[data-level="caution"],
+.app-shell[data-level="warning"],
 html[data-level="caution"],
 html[data-level="warning"] {
   --accent: var(--caution);
@@ -57,6 +59,7 @@ html[data-level="warning"] {
   --status-color: var(--caution);
 }
 
+.app-shell[data-level="emergency"],
 html[data-level="emergency"] {
   --accent: var(--alert);
   --accent-2: #f97316;
