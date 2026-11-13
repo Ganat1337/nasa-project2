@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { personalInsights, sharedCrewInsights, createCrewReport } from "@/aura/companion";
 import type { Alert, CrewMember } from "@/domain/types";
+import { CapsuleButton, GlassCard, StatusPill } from "./ui";
 
 interface Props {
   isDoctor: boolean;
@@ -27,14 +28,19 @@ export function CompanionOverview({isDoctor, selected, crew, alerts, connectionA
     anchor.click();
     URL.revokeObjectURL(url);
   }
-  return <section className="companion-card" aria-label={isDoctor ? "Crew intelligence" : "Personal health companion"}>
+  return <GlassCard as="section" className="companion-card" aria-label={isDoctor ? "Crew intelligence" : "Personal health companion"}>
     <div className="companion-card__head">
       <div>
         <span className="companion-card__eyebrow">✦ AURA · {isDoctor ? "Crew intelligence" : "Personal companion"}</span>
         <h2>{isDoctor ? "Autonomous crew watch" : `Hello, ${selected.name.split(" ")[0]} 👋`}</h2>
         <p>{isDoctor ? "Monitoring simulated telemetry across the entire crew." : "I'm watching your simulated health readings. You can talk to me whenever you need support."}</p>
       </div>
-      <span className={connectionAvailable ? "companion-badge" : "companion-badge companion-badge--offline"}>{connectionAvailable ? "AI connected*" : "Local support"}</span>
+      <StatusPill
+        className={connectionAvailable ? "companion-badge" : "companion-badge companion-badge--offline"}
+        level={connectionAvailable ? "nominal" : "caution"}
+      >
+        {connectionAvailable ? "AI connected*" : "Local support"}
+      </StatusPill>
     </div>
     {!connectionAvailable && <p className="companion-card__offline" role="status">Ground/AI connection unavailable. Local health watch and preset guidance remain available. AI conversation cannot work without an API connection.</p>}
     {visible.length === 0 ? <p className="companion-card__clear" role="status">✓ No active personalized concerns detected in the current simulated snapshot.</p> : <div className="companion-card__insights" aria-live="polite">
@@ -48,10 +54,10 @@ export function CompanionOverview({isDoctor, selected, crew, alerts, connectionA
       {visible.length > 6 && <p>{visible.length - 6} more observations. Open the operations panel to view all alerts.</p>}
     </div>}
     <div className="companion-card__actions">
-      <button className="button companion-card__primary" onClick={() => onTalk(isDoctor ? "How is the crew doing today?" : "I'd like to talk about how I'm feeling.")}>{isDoctor ? "Ask AURA about crew" : "Talk to AURA"}</button>
-      <button className="button" onClick={exportReport}>Export {isDoctor ? "crew" : "my"} report</button>
+      <CapsuleButton className="button companion-card__primary" onClick={() => onTalk(isDoctor ? "How is the crew doing today?" : "I'd like to talk about how I'm feeling.")} variant="primary">{isDoctor ? "Ask AURA about crew" : "Talk to AURA"}</CapsuleButton>
+      <CapsuleButton className="button" onClick={exportReport} variant="secondary">Export {isDoctor ? "crew" : "my"} report</CapsuleButton>
       {!isDoctor && urgent.length > 0 && <span className="companion-card__urgent">{urgent.length} active alert(s)</span>}
     </div>
     <small>* AI chat requires the Gemini API service. Demo data only · Not a medical device.</small>
-  </section>;
+  </GlassCard>;
 }

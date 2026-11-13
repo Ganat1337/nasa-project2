@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAppStore } from "@/store";
 import type { TemperatureUnit } from "@/domain/types";
+import { CapsuleButton, GlassSheet } from "./ui";
 
 export function SettingsDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ export function SettingsDialog({ open, onClose }: { open: boolean; onClose: () =
       className="dialog-backdrop"
       onMouseDown={(event) => event.target === event.currentTarget && onClose()}
     >
-      <div
+      <GlassSheet
         className="settings-dialog"
         role="dialog"
         aria-modal="true"
@@ -42,7 +43,7 @@ export function SettingsDialog({ open, onClose }: { open: boolean; onClose: () =
           <div>
             <p className="eyebrow">MISSION CONTROL</p>
             <h2 id="settings-title">Dashboard settings</h2>
-          </div>
+          </GlassSheet>
           <button className="icon-button" onClick={onClose} aria-label="Close settings">
             ×
           </button>
@@ -106,9 +107,13 @@ export function SettingsDialog({ open, onClose }: { open: boolean; onClose: () =
           Local settings and medical notes stay in this browser. Do not enter real patient
           information.
         </div>
-        <button className="button button--primary dialog-close" onClick={onClose}>
+        <CapsuleButton
+          className="button button--primary dialog-close"
+          onClick={onClose}
+          variant="primary"
+        >
           Done
-        </button>
+        </CapsuleButton>
       </div>
     </div>
   );

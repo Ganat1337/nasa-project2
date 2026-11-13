@@ -1,6 +1,7 @@
 import { SCENARIOS } from "@/config/scenarios";
 import type { ScenarioId } from "@/domain/types";
 import { useAppStore } from "@/store";
+import { GlassCard } from "./ui";
 
 const SCENARIO_ORDER: ScenarioId[] = [
   "cardiac-event",
@@ -16,7 +17,7 @@ export function ScenarioControls({ activeScenario }: { activeScenario: ScenarioI
   const launchScenario = useAppStore((state) => state.launchScenario);
 
   return (
-    <section className="panel scenario-panel">
+    <GlassCard className="panel scenario-panel">
       <div className="panel-heading">
         <div>
           <p className="eyebrow">TRAINING / SIMULATION</p>
@@ -47,6 +48,6 @@ export function ScenarioControls({ activeScenario }: { activeScenario: ScenarioI
         Synthetic events are for interface demonstration only and do not represent validated
         clinical scenarios.
       </p>
-    </section>
+    </GlassCard>
   );
 }
