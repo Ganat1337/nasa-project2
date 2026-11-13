@@ -1,5 +1,6 @@
 import { useAppStore } from "@/store";
 import { MISSION_PROFILES } from "@/config/missions";
+import { GlassCard, SectionHeader } from "./ui";
 
 function crewStatus(
   crewId: string,
@@ -24,17 +25,18 @@ export function CrewRoster() {
   const selectCrew = useAppStore((state) => state.selectCrew);
 
   return (
-    <section className="panel crew-panel">
-      <div className="panel-heading">
-        <div>
-          <p className="eyebrow">MISSION PERSONNEL</p>
-          <h2>
+    <GlassCard className="panel crew-panel">
+      <SectionHeader
+        className="panel-heading"
+        kicker="MISSION PERSONNEL"
+        title={
+          <>
             Crew roster{" "}
             <span className="heading-count">{String(crew.length).padStart(2, "0")}</span>
-          </h2>
-        </div>
-        <span className="micro-label">LIVE</span>
-      </div>
+          </>
+        }
+        aside={<span className="micro-label">LIVE</span>}
+      />
       <div className="crew-list">
         {crew.map((member, index) => {
           const status = crewStatus(member.id, alerts);
@@ -95,6 +97,6 @@ export function CrewRoster() {
           <strong>{mode === "lunar" ? "Transit / Gateway" : "Deep-space transit"}</strong>
         </div>
       </div>
-    </section>
+    </GlassCard>
   );
 }

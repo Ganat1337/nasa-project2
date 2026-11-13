@@ -13,6 +13,7 @@ import type { ChartOptions } from "chart.js";
 import type { CrewMember } from "@/domain/types";
 import { useAppStore } from "@/store";
 import { ScenarioControls } from "./ScenarioControls";
+import { GlassCard, KpiNumber } from "./ui";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
@@ -32,6 +33,9 @@ function stressLabel(value: number): string {
 }
 
 function VitalsChart({ crew, critical }: { crew: CrewMember; critical: boolean }) {
+  const accentRgb =
+    getComputedStyle(document.documentElement).getPropertyValue("--accent-rgb").trim() ||
+    "168, 85, 247";
   const data = useMemo(
     () => ({
       labels: crew.heartRateHistory.map((_, index) => `${index * 2}s`),
@@ -39,8 +43,8 @@ function VitalsChart({ crew, critical }: { crew: CrewMember; critical: boolean }
         {
           label: "Heart rate",
           data: crew.heartRateHistory.map((point) => point.value),
-          borderColor: critical ? "#ff596b" : "#47e6f4",
-          backgroundColor: critical ? "rgba(255, 89, 107, .12)" : "rgba(71, 230, 244, .11)",
+          borderColor: critical ? "#EF4444" : `rgb(${accentRgb})`,
+          backgroundColor: critical ? "rgba(239, 68, 68, .12)" : `rgba(${accentRgb}, .12)`,
           borderWidth: 2,
           fill: true,
           tension: 0.38,
@@ -49,7 +53,7 @@ function VitalsChart({ crew, critical }: { crew: CrewMember; critical: boolean }
         },
       ],
     }),
-    [crew.heartRateHistory, critical],
+    [crew.heartRateHistory, critical, accentRgb],
   );
 
   const options: ChartOptions<"line"> = {
@@ -59,11 +63,11 @@ function VitalsChart({ crew, critical }: { crew: CrewMember; critical: boolean }
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: "#111b2b",
-        borderColor: "#34435a",
+        backgroundColor: "#140c26",
+        borderColor: "rgba(168, 85, 247, .35)",
         borderWidth: 1,
-        titleColor: "#9aacbf",
-        bodyColor: "#f5f8fc",
+        titleColor: "rgba(245, 240, 255, .6)",
+        bodyColor: "#F5F0FF",
         displayColors: false,
         callbacks: { label: (context) => `${context.parsed.y} BPM` },
       },
@@ -73,8 +77,12 @@ function VitalsChart({ crew, critical }: { crew: CrewMember; critical: boolean }
       y: {
         min: 40,
         max: 180,
-        ticks: { color: "#72839a", maxTicksLimit: 4, font: { family: "JetBrains Mono", size: 10 } },
-        grid: { color: "rgba(130, 153, 182, .12)" },
+        ticks: {
+          color: "rgba(245, 240, 255, .38)",
+          maxTicksLimit: 4,
+          font: { family: "JetBrains Mono", size: 10 },
+        },
+        grid: { color: "rgba(168, 85, 247, .12)" },
         border: { display: false },
       },
     },
@@ -123,7 +131,7 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
         </div>
       </div>
 
-      <section className={`panel heart-panel ${activeCritical ? "panel--critical" : ""}`}>
+      <GlassCard className={`panel heart-panel ${activeCritical ? "panel--critical" : ""}`}>
         <div className="panel-heading">
           <div>
             <p className="eyebrow">CARDIOVASCULAR</p>
@@ -151,18 +159,18 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
           <span>60-POINT HISTORY</span>
           <span>{linkLabel}</span>
         </div>
-      </section>
+      </GlassCard>
 
       <div className="metric-grid">
-        <section className="panel metric-card">
+        <GlassCard className="panel metric-card">
           <div className="metric-card__heading">
             <span className="metric-icon metric-icon--cyan">O₂</span>
             <span className="eyebrow">OXYGEN SATURATION</span>
           </div>
-          <div className="metric-value">
+          <KpiNumber className="metric-value">
             {crew.vitals.spo2Percent.toFixed(1)}
             <small>%</small>
-          </div>
+          </KpiNumber>
           <div className="progress-track">
             <span
               className="progress-fill progress-fill--cyan"
@@ -173,29 +181,29 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
             <span>Pulse oximetry</span>
             <span>Illustrative</span>
           </div>
-        </section>
-        <section className="panel metric-card">
+        </GlassCard>
+        <GlassCard className="panel metric-card">
           <div className="metric-card__heading">
             <span className="metric-icon metric-icon--blue">°</span>
             <span className="eyebrow">BODY TEMP</span>
           </div>
-          <div className="metric-value">
+          <KpiNumber className="metric-value">
             {formatTemperature(crew.vitals.temperatureC, temperatureUnit)}
-          </div>
+          </KpiNumber>
           <div className="metric-foot">
             <span>Core estimate</span>
             <span>Telemetry</span>
           </div>
-        </section>
-        <section className="panel metric-card">
+        </GlassCard>
+        <GlassCard className="panel metric-card">
           <div className="metric-card__heading">
             <span className="metric-icon metric-icon--amber">◌</span>
             <span className="eyebrow">STRESS INDEX</span>
           </div>
-          <div className="metric-value">
+          <KpiNumber className="metric-value">
             {stressLabel(crew.vitals.stressIndex)}
             <small> {Math.round(crew.vitals.stressIndex)}</small>
-          </div>
+          </KpiNumber>
           <div className="progress-track">
             <span
               className="progress-fill progress-fill--amber"
@@ -206,11 +214,11 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
             <span>Relative demo index</span>
             <span>0–100</span>
           </div>
-        </section>
+        </GlassCard>
       </div>
 
       <div className="space-metrics">
-        <section className="panel space-card radiation-card">
+        <GlassCard className="panel space-card radiation-card">
           <div className="panel-heading">
             <div>
               <p className="eyebrow">DEEP-SPACE EXPOSURE</p>
@@ -218,9 +226,9 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
             </div>
             <span className="metric-icon metric-icon--violet">☼</span>
           </div>
-          <div className="space-card__value">
+          <KpiNumber className="space-card__value">
             {crew.vitals.radiationDoseMsv.toFixed(2)} <small>mSv</small>
-          </div>
+          </KpiNumber>
           <div className="progress-track progress-track--large">
             <span
               className="progress-fill progress-fill--violet"
@@ -231,8 +239,8 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
             <span>Illustrative cumulative estimate</span>
             <span>{radiationFraction.toFixed(1)}% of demo reference</span>
           </div>
-        </section>
-        <section className="panel space-card workout-card">
+        </GlassCard>
+        <GlassCard className="panel space-card workout-card">
           <div className="panel-heading">
             <div>
               <p className="eyebrow">MICROGRAVITY COUNTERMEASURE</p>
@@ -240,9 +248,9 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
             </div>
             <span className="metric-icon metric-icon--green">↗</span>
           </div>
-          <div className="space-card__value">
+          <KpiNumber className="space-card__value">
             {crew.workoutMinutes.toFixed(0)} <small>/ 60 min</small>
-          </div>
+          </KpiNumber>
           <div className="progress-track progress-track--large">
             <span
               className="progress-fill progress-fill--green"
@@ -255,8 +263,8 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
             </span>
             <span>Illustrative target</span>
           </div>
-        </section>
-        <section className="panel space-card sleep-card">
+        </GlassCard>
+        <GlassCard className="panel space-card sleep-card">
           <div className="panel-heading">
             <div>
               <p className="eyebrow">CIRCADIAN HEALTH</p>
@@ -264,9 +272,9 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
             </div>
             <span className="metric-icon metric-icon--blue">☾</span>
           </div>
-          <div className="space-card__value">
+          <KpiNumber className="space-card__value">
             {crew.sleepHours24h.toFixed(1)} <small>h / 24h</small>
-          </div>
+          </KpiNumber>
           <div className="progress-track progress-track--large">
             <span
               className="progress-fill progress-fill--blue"
@@ -277,7 +285,7 @@ export function VitalsPanel({ crew, linkLabel }: VitalsPanelProps) {
             <span>Quality estimate</span>
             <span>{crew.sleepQuality}%</span>
           </div>
-        </section>
+        </GlassCard>
       </div>
 
       <ScenarioControls activeScenario={simulation.scenario?.id ?? null} />

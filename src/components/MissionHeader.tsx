@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppStore } from "@/store";
 import type { MissionMode } from "@/domain/types";
+import { CapsuleButton, SegmentedControl, Switch } from "./ui";
 
 interface MissionHeaderProps {
   isDoctor: boolean;
@@ -51,7 +52,15 @@ export function MissionHeader({
     <header className="mission-header">
       <div className="brand-lockup">
         <div className="brand-mark" aria-hidden="true">
-          A
+          <svg viewBox="0 0 32 32" fill="none">
+            <path
+              d="M3 16h6l3.2-7.5L18 24l3.4-12 2.2 4H29"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.8"
+            />
+          </svg>
         </div>
         <div>
           <p className="eyebrow">
@@ -68,6 +77,15 @@ export function MissionHeader({
           </div>
         </div>
       </div>
+
+      <nav className="mission-nav mono" aria-label="Mission sections">
+        <a href="#mission-overview" aria-current="page">
+          Mission control
+        </a>
+        <a href="#crew-vitals">Crew health</a>
+        <a href="#mission-scene">Spacecraft</a>
+        <a href={isDoctor ? "#operations-panel" : "#crew-vitals"}>Analytics</a>
+      </nav>
 
       <div className="header-controls">
         <div
@@ -91,38 +109,40 @@ export function MissionHeader({
         </div>
         {isDoctor && (
           <>
-            <label className="mode-select">
-              <span className="sr-only">Mission mode</span>
-              <select
-                value={mode}
-                onChange={(event) => setMissionMode(event.target.value as MissionMode)}
-              >
-                <option value="lunar">Lunar mission</option>
-                <option value="mars">Mars mission</option>
-              </select>
-            </label>
+            <SegmentedControl
+              aria-label="Mission mode"
+              options={[
+                { value: "lunar", label: "LUNAR" },
+                { value: "mars", label: "MARS" },
+              ]}
+              value={mode}
+              onValueChange={(value) => setMissionMode(value as MissionMode)}
+            />
             {mode === "mars" && (
-              <label className="conjunction-toggle">
-                <input
-                  type="checkbox"
-                  checked={solarConjunction}
-                  onChange={(event) => setSolarConjunction(event.target.checked)}
-                />
-                <span>Conjunction</span>
-              </label>
+              <Switch
+                className="conjunction-toggle"
+                checked={solarConjunction}
+                label="Conjunction"
+                onChange={(event) => setSolarConjunction(event.target.checked)}
+              />
             )}
             {scenarioActive ? (
-              <button
+              <CapsuleButton
                 className="button button--reset"
                 onClick={reset}
                 title="Reset simulated scenario"
+                variant="danger"
               >
                 {confirmReset ? "Confirm reset?" : "Reset normal"}
-              </button>
+              </CapsuleButton>
             ) : (
-              <button className="button button--emergency" onClick={onEmergency}>
+              <CapsuleButton
+                className="button button--emergency"
+                onClick={onEmergency}
+                variant="danger"
+              >
                 <span aria-hidden="true">!</span> Simulate emergency
-              </button>
+              </CapsuleButton>
             )}
             <button
               className="icon-button settings-button"

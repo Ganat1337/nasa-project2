@@ -3,6 +3,7 @@ import { getCabinSeverity } from "@/config/thresholds";
 import { MEDICAL_PROTOCOLS } from "@/data/protocols";
 import type { Alert, CrewMember, LogCategory } from "@/domain/types";
 import { useAppStore } from "@/store";
+import { CapsuleButton, GlassCard, StatusPill, Timeline } from "./ui";
 
 const LEVEL_LABEL: Record<Alert["level"], string> = {
   caution: "CAUTION",
@@ -30,9 +31,13 @@ function AlertCard({ alert }: { alert: Alert }) {
   return (
     <article className={`alert-card alert-card--${alert.level}`}>
       <div className="alert-card__topline">
-        <span className={`alert-severity alert-severity--${alert.level}`}>
-          <i /> {LEVEL_LABEL[alert.level]}
-        </span>
+        <StatusPill
+          className={`alert-severity alert-severity--${alert.level}`}
+          icon={<i />}
+          level={alert.level}
+        >
+          {LEVEL_LABEL[alert.level]}
+        </StatusPill>
         <time dateTime={alert.createdAt}>{utcTime(alert.createdAt)} UTC</time>
       </div>
       <h4>{alert.title}</h4>
@@ -52,9 +57,13 @@ function AlertCard({ alert }: { alert: Alert }) {
           {alert.source.verified ? "SOURCE VERIFIED" : "ILLUSTRATIVE RULE"}
         </span>
         {alert.active && !alert.acknowledged && (
-          <button className="text-button" onClick={() => acknowledge(alert.id)}>
+          <CapsuleButton
+            className="text-button"
+            onClick={() => acknowledge(alert.id)}
+            variant="secondary"
+          >
             Acknowledge
-          </button>
+          </CapsuleButton>
         )}
         {alert.acknowledged && <span className="acknowledged-label">ACKNOWLEDGED</span>}
         {!alert.active && <span className="resolved-label">CLEARED</span>}
@@ -70,7 +79,7 @@ function AlertCenter() {
   const history = alerts.filter((alert) => !alert.active).slice(0, 3);
 
   return (
-    <section
+    <GlassCard
       className={`panel alert-center ${active.some((alert) => alert.level === "emergency") ? "alert-center--critical" : ""}`}
     >
       <div className="panel-heading">
@@ -85,9 +94,13 @@ function AlertCenter() {
       {active.length > 0 ? (
         <>
           {active.some((alert) => !alert.acknowledged) && (
-            <button className="acknowledge-all" onClick={acknowledgeAll}>
+            <CapsuleButton
+              className="acknowledge-all"
+              onClick={acknowledgeAll}
+              variant="secondary"
+            >
               Acknowledge all active
-            </button>
+            </CapsuleButton>
           )}
           <div className="alert-list">
             {active.slice(0, 4).map((alert) => (
@@ -125,7 +138,7 @@ function AlertCenter() {
         Automated values are illustrative. Verify sensors and defer to approved medical and vehicle
         procedures.
       </p>
-    </section>
+    </GlassCard>
   );
 }
 
@@ -138,15 +151,18 @@ function CabinCard() {
       ? `${cabin.temperatureC.toFixed(1)}°C`
       : `${((cabin.temperatureC * 9) / 5 + 32).toFixed(1)}°F`;
   return (
-    <section className={`panel cabin-panel ${severity === "emergency" ? "panel--critical" : ""}`}>
+    <GlassCard className={`panel cabin-panel ${severity === "emergency" ? "panel--critical" : ""}`}>
       <div className="panel-heading">
         <div>
           <p className="eyebrow">LIFE-SUPPORT TELEMETRY</p>
           <h3>Cabin environment</h3>
         </div>
-        <span className={`micro-label ${severity !== "nominal" ? "text-warning" : ""}`}>
+        <StatusPill
+          className={`micro-label ${severity !== "nominal" ? "text-warning" : ""}`}
+          level={severity}
+        >
           {severity === "nominal" ? "NOMINAL" : severity.toUpperCase()}
-        </span>
+        </StatusPill>
       </div>
       <div className="cabin-grid">
         <div>
@@ -186,7 +202,7 @@ function CabinCard() {
       <p className="fine-print">
         Environment readings are fictional demo data, not spacecraft operating setpoints.
       </p>
-    </section>
+    </GlassCard>
   );
 }
 
@@ -228,7 +244,7 @@ function MedicalLog({ crew }: { crew: CrewMember }) {
   };
 
   return (
-    <section className="panel medical-log-panel">
+    <GlassCard className="panel medical-log-panel">
       <div className="panel-heading">
         <div>
           <p className="eyebrow">FLIGHT SURGEON WORKSPACE</p>
@@ -267,9 +283,9 @@ function MedicalLog({ crew }: { crew: CrewMember }) {
       </form>
       {logs.length > 0 ? (
         <>
-          <div className="log-list">
+          <Timeline className="log-list">
             {logs.slice(0, 5).map((entry) => (
-              <article className="log-entry" key={entry.id}>
+              <li className="log-entry" key={entry.id}>
                 <div className="log-entry__meta">
                   <span>{entry.category}</span>
                   <time dateTime={entry.timestamp}>{utcTime(entry.timestamp)} UTC</time>
@@ -282,9 +298,9 @@ function MedicalLog({ crew }: { crew: CrewMember }) {
                 >
                   ×
                 </button>
-              </article>
+              </li>
             ))}
-          </div>
+          </Timeline>
           <div className="log-footer">
             <button className="text-button" onClick={downloadCsv}>
               Export CSV
@@ -302,7 +318,7 @@ function MedicalLog({ crew }: { crew: CrewMember }) {
           No notes yet for {crew.name}. Entries remain in this browser.
         </div>
       )}
-    </section>
+    </GlassCard>
   );
 }
 

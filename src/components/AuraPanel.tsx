@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import type { CrewMember } from "@/domain/types";
 import { offlineCompanionReply } from "@/aura/companion";
 import { symptomCheck } from "@/aura/triage";
+import { GlassCard } from "./ui";
 
 interface AuraPanelProps {
   isDoctor: boolean;
@@ -129,7 +130,8 @@ export function AuraPanel({ isDoctor, connectionAvailable, starter, crew, select
     : ["I have a headache", "I feel dizzy", "I'm feeling anxious", "I can't contact the doctor", "How is my health today?", "Show my heart-rate history", "How much did I sleep?", "What is my oxygen level?"];
 
   return (
-    <aside
+    <GlassCard
+      as="aside"
       id="aura-panel"
       className={expanded ? "panel aura-panel aura-panel--expanded" : "panel aura-panel"}
       aria-labelledby="aura-title"
@@ -230,6 +232,6 @@ export function AuraPanel({ isDoctor, connectionAvailable, starter, crew, select
           Send
         </button>
       </form>
-    </aside>
+    </GlassCard>
   );
 }
