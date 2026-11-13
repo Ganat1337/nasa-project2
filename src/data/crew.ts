@@ -1,0 +1,121 @@
+import type { CrewMember, SourceNote, Vitals } from "@/domain/types";
+
+const sampleSource: SourceNote = {
+  label: "UNVERIFIED — fictional crew and illustrative baseline",
+  verified: false,
+  note: "Not real astronaut data and not a clinical reference range.",
+};
+
+// UNVERIFIED: all profiles, baselines, starting values, and history points below are fictional demo data.
+const createVitals = (
+  heartRateBpm: number,
+  spo2Percent: number,
+  temperatureC: number,
+  stressIndex: number,
+  radiationDoseMsv: number,
+): Vitals => ({
+  heartRateBpm,
+  spo2Percent,
+  temperatureC,
+  stressIndex,
+  radiationDoseMsv,
+  radiationRateMsvPerDay: 0.2,
+  boneHealthIndex: 92,
+  muscleHealthIndex: 95,
+  fluidShiftIndex: 18,
+});
+
+export const CREW_PROFILES: CrewMember[] = [
+  {
+    id: "aur-01",
+    name: "Maya Chen",
+    role: "Commander",
+    age: 42,
+    sex: "Female",
+    avatar: "👩‍🚀",
+    baseline: {
+      restingHeartRateBpm: 68,
+      spo2Percent: 98,
+      temperatureC: 36.8,
+      stressIndex: 22,
+      radiationDoseMsv: 26.4,
+      radiationDemoReferenceMsv: 600,
+      source: sampleSource,
+    },
+    vitals: createVitals(68, 98, 36.8, 22, 26.4),
+    activityState: "rest",
+    activityElapsedSeconds: 0,
+    workoutMinutes: 45,
+    cardioMinutes: 25,
+    resistanceMinutes: 20,
+    sleepHours24h: 7.4,
+    sleepQuality: 82,
+    heartRateHistory: Array.from({ length: 60 }, (_, index) => ({
+      elapsedSeconds: index * 2,
+      value: Math.round(68 + Math.sin(index / 4) * 3),
+    })),
+    activityCycleOffsetSeconds: 0,
+  },
+  {
+    id: "aur-02",
+    name: "Javier Ortiz",
+    role: "Flight Engineer",
+    age: 39,
+    sex: "Male",
+    avatar: "🧑‍🚀",
+    baseline: {
+      restingHeartRateBpm: 74,
+      spo2Percent: 97,
+      temperatureC: 36.7,
+      stressIndex: 31,
+      radiationDoseMsv: 32.8,
+      radiationDemoReferenceMsv: 620,
+      source: sampleSource,
+    },
+    vitals: createVitals(74, 97, 36.7, 31, 32.8),
+    activityState: "exercise",
+    activityElapsedSeconds: 0,
+    workoutMinutes: 52,
+    cardioMinutes: 28,
+    resistanceMinutes: 24,
+    sleepHours24h: 6.9,
+    sleepQuality: 75,
+    heartRateHistory: Array.from({ length: 60 }, (_, index) => ({
+      elapsedSeconds: index * 2,
+      value: Math.round(74 + Math.sin(index / 4) * 4),
+    })),
+    activityCycleOffsetSeconds: 44_000,
+  },
+  {
+    id: "aur-03",
+    name: "Priya Nair",
+    role: "Medical Officer",
+    age: 37,
+    sex: "Female",
+    avatar: "👩‍🚀",
+    baseline: {
+      restingHeartRateBpm: 79,
+      spo2Percent: 98,
+      temperatureC: 36.9,
+      stressIndex: 38,
+      radiationDoseMsv: 29.7,
+      radiationDemoReferenceMsv: 580,
+      source: sampleSource,
+    },
+    vitals: createVitals(79, 98, 36.9, 38, 29.7),
+    activityState: "eva",
+    activityElapsedSeconds: 0,
+    workoutMinutes: 38,
+    cardioMinutes: 20,
+    resistanceMinutes: 18,
+    sleepHours24h: 7.8,
+    sleepQuality: 88,
+    heartRateHistory: Array.from({ length: 60 }, (_, index) => ({
+      elapsedSeconds: index * 2,
+      value: Math.round(79 + Math.sin(index / 4) * 5),
+    })),
+    activityCycleOffsetSeconds: 48_000,
+  },
+];
+
+export const FLIGHT_DOCTOR = { name: "Elias Ward" };
