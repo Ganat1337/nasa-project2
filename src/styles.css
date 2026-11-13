@@ -4,31 +4,12 @@
 
 :root {
   font-family: "Inter", sans-serif;
-  color: #e6edf7;
-  background: #060913;
+  color: var(--text);
+  background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --space-950: #060913;
-  --space-900: #0a1020;
-  --space-850: #0c1424;
-  --space-800: #0f172a;
-  --space-750: #131e31;
-  --space-700: #1b2940;
-  --line: rgba(130, 157, 194, 0.17);
-  --line-strong: rgba(130, 157, 194, 0.28);
-  --text: #e6edf7;
-  --muted: #8594a9;
-  --dim: #5f6e82;
-  --cyan: #47e6f4;
-  --blue: #64a7ff;
-  --green: #2dd4a0;
-  --amber: #f3b84e;
-  --red: #ff596b;
-  --violet: #ad8bff;
-  --mono: "JetBrains Mono", monospace;
-  --display: "Orbitron", sans-serif;
-  --radius: 12px;
-  color-scheme: dark;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--mode-transition), background-color var(--mode-transition);
 }
 
 * {

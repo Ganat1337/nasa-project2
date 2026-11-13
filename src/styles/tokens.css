@@ -1,0 +1,72 @@
+:root {
+  color-scheme: dark;
+  --bg: #05020c;
+  --card: rgba(20, 12, 38, 0.62);
+  --card-hover: rgba(26, 16, 48, 0.76);
+  --card-border: rgba(168, 85, 247, 0.28);
+  --card-border-bright: rgba(168, 85, 247, 0.52);
+  --violet: #a855f7;
+  --magenta: #d946ef;
+  --text: #f5f0ff;
+  --text-dim: rgba(245, 240, 255, 0.6);
+  --text-faint: rgba(245, 240, 255, 0.38);
+  --caution: #f59e0b;
+  --alert: #ef4444;
+  --accent: var(--violet);
+  --accent-2: var(--magenta);
+  --accent-rgb: 168, 85, 247;
+  --accent-2-rgb: 217, 70, 239;
+  --accent-soft: rgba(168, 85, 247, 0.14);
+  --accent-glow: rgba(168, 85, 247, 0.42);
+  --status-color: var(--violet);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --mode-transition: 600ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Compatibility aliases for the existing component stylesheet. */
+  --space-950: var(--bg);
+  --space-900: #100a1f;
+  --space-850: #140c26;
+  --space-800: #1a1030;
+  --space-750: #21153a;
+  --space-700: #2b1d49;
+  --line: var(--card-border);
+  --line-strong: rgba(168, 85, 247, 0.42);
+  --muted: var(--text-dim);
+  --dim: var(--text-faint);
+  --cyan: var(--violet);
+  --blue: #9c8cff;
+  --green: #78ddb3;
+  --amber: var(--caution);
+  --red: var(--alert);
+  --mono: "JetBrains Mono", monospace;
+  --display: "Orbitron", sans-serif;
+  --radius: 24px;
+}
+
+html[data-level="caution"],
+html[data-level="warning"] {
+  --accent: var(--caution);
+  --accent-2: #fbbf24;
+  --accent-rgb: 245, 158, 11;
+  --accent-2-rgb: 251, 191, 36;
+  --card-border: rgba(245, 158, 11, 0.32);
+  --card-border-bright: rgba(245, 158, 11, 0.58);
+  --accent-soft: rgba(245, 158, 11, 0.14);
+  --accent-glow: rgba(245, 158, 11, 0.38);
+  --status-color: var(--caution);
+}
+
+html[data-level="emergency"] {
+  --accent: var(--alert);
+  --accent-2: #f97316;
+  --accent-rgb: 239, 68, 68;
+  --accent-2-rgb: 249, 115, 22;
+  --card: rgba(28, 10, 18, 0.68);
+  --card-hover: rgba(38, 12, 22, 0.8);
+  --card-border: rgba(239, 68, 68, 0.44);
+  --card-border-bright: rgba(239, 68, 68, 0.78);
+  --accent-soft: rgba(239, 68, 68, 0.16);
+  --accent-glow: rgba(239, 68, 68, 0.48);
+  --status-color: var(--alert);
+}
